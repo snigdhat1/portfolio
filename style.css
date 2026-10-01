@@ -3,10 +3,18 @@ body {
          and use the OS’s UI font as the website font
        */
     font: 100%/1.5 system-ui;
+    background: #b8c8dc; /* blue gray */
   }
   
 img {
     /* Half the page width so it doesnt overflow the page */
     width: 50%;
     height: auto;
+}
+
+
+nav {
+    /* Put the links in a row with space between them */
+    display: flex;
+    gap: 1.5em;
 }
