@@ -1,20 +1,159 @@
+:root {
+    --color-accent: oklch(36.924% 0.04087 202.825);
+    accent-color: var(--color-accent);
+}
+
 body {
-    /* Set line height to 1.5 times the font size
-         and use the OS’s UI font as the website font
-       */
+    /* Set line height to 1.5 times the font sizeand use the OS’s UI font as the website font */
     font: 100%/1.5 system-ui;
-    background: #b8c8dc; /* blue gray */
+    max-width: 100ch;
+    margin-inline: max(1em, (100% - 100ch) / 2);
   }
-  
+
+input,
+textarea,
+button {
+    font: inherit;
+}
+
+form {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1em;
+}
+
+form label {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+}
+
+form button {
+    grid-column: 1 / -1;
+}
+
 img {
     /* Half the page width so it doesnt overflow the page */
-    width: 50%;
+    width: 70%;
     height: auto;
 }
 
 
 nav {
-    /* Put the links in a row with space between them */
     display: flex;
     gap: 1.5em;
+    border-bottom: 1px solid oklch(80% 3% 200);
+    margin-bottom: 1em;
+}
+
+nav a {
+    flex: 1;
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
+    padding: 0.5em;
+}
+
+nav a.current {
+    border-bottom: 0.4em solid oklch(80% 3% 200);
+    padding-bottom: 0.1em;
+}
+
+nav a:hover {
+    /* Same underline as the current link, in the accent color */
+    border-bottom: 0.4em solid var(--color-accent);
+    padding-bottom: 0.1em;
+    background-color: oklch(95% 0.01 200);
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+  gap: 1em;
+}
+
+.projects article {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+}
+
+.projects h2 {
+  margin: 0;
+}
+
+h1 {
+  font-size: 400%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+/*  Resume Styling */
+
+.resume > header {
+  text-align: center;
+}
+
+.resume h1 {
+  font-size: 250%;
+}
+
+.resume section h2 {
+  color: var(--color-accent);
+  border-bottom: 1px solid oklch(80% 3% 200);
+  padding-bottom: 0.2em;
+}
+
+.resume article header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 1em;
+}
+
+.resume article header h3,
+.resume article header p {
+  margin: 0;
+}
+
+.resume time {
+  color: oklch(50% 3% 200);
+}
+
+.resume-projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+  gap: 1em;
+}
+
+.resume-projects h2 {
+  grid-column: 1 / -1;
+}
+
+.resume-projects article {
+  background: oklch(from var(--color-accent) 95% 5% h);
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+.resume-projects h3 {
+  margin-top: 0;
+}
+
+.skills {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5em 1em;
+  list-style: none;
+  padding: 0;
+}
+
+.skills li {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
 }
