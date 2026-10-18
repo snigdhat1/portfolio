@@ -1,3 +1,7 @@
+html {
+    color-scheme: light dark;
+}
+
 :root {
     --color-accent: oklch(36.924% 0.04087 202.825);
     accent-color: var(--color-accent);
@@ -12,7 +16,8 @@ body {
 
 input,
 textarea,
-button {
+button,
+select {
     font: inherit;
 }
 
@@ -40,9 +45,10 @@ img {
 
 
 nav {
+    --border-color: oklch(50% 10% 200 / 40%);
     display: flex;
     gap: 1.5em;
-    border-bottom: 1px solid oklch(80% 3% 200);
+    border-bottom: 1px solid var(--border-color);
     margin-bottom: 1em;
 }
 
@@ -55,7 +61,7 @@ nav a {
 }
 
 nav a.current {
-    border-bottom: 0.4em solid oklch(80% 3% 200);
+    border-bottom: 0.4em solid var(--border-color);
     padding-bottom: 0.1em;
 }
 
@@ -63,7 +69,15 @@ nav a:hover {
     /* Same underline as the current link, in the accent color */
     border-bottom: 0.4em solid var(--color-accent);
     padding-bottom: 0.1em;
-    background-color: oklch(95% 0.01 200);
+    background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
+}
+
+.color-scheme {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 80%;
+    font-family: inherit;
 }
 
 .projects {
@@ -135,7 +149,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .resume-projects article {
-  background: oklch(from var(--color-accent) 95% 5% h);
+  background: color-mix(in oklch, var(--color-accent), canvas 90%);
   padding: 1em;
   border-radius: 0.5em;
 }
