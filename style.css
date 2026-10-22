@@ -171,3 +171,66 @@ h1, h2, h3, h4, h5, h6 {
   grid-template-columns: subgrid;
   grid-column: 1 / -1;
 }
+
+/* Project 2 report */
+
+.report {
+  /* The accent is too dark to read on a dark background, so lighten it in dark mode */
+  --report-accent: light-dark(var(--color-accent), oklch(78% 0.07 202.825));
+}
+
+.report h1 {
+  font-size: 250%;
+}
+
+.report .eyebrow {
+  margin-bottom: 0;
+  color: var(--report-accent);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.report section h2 {
+  color: var(--report-accent);
+  border-bottom: 1px solid oklch(80% 3% 200);
+  padding-bottom: 0.2em;
+}
+
+.report figure {
+  margin: 1em 0;
+}
+
+.report figure img {
+  /* Charts need the full width to stay readable (global img rule is 70%) */
+  display: block;
+  width: 100%;
+  margin-bottom: 1em;
+  border-radius: 0.5em;
+}
+
+.report figcaption {
+  font-style: italic;
+  color: oklch(50% 3% 200);
+}
+
+.decisions {
+  list-style: none;
+  padding: 0;
+}
+
+.decisions li {
+  margin-bottom: 1em;
+  padding: 1em;
+  background: color-mix(in oklch, var(--color-accent), canvas 90%);
+  border-radius: 0.5em;
+}
+
+.decisions .score {
+  float: right;
+  margin-left: 0.5em;
+  padding: 0 0.5em;
+  font-weight: bold;
+  border: 1px solid var(--report-accent);
+  border-radius: 1em;
+}
