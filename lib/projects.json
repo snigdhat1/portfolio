@@ -1,0 +1,76 @@
+[
+  {
+    "title": "Lab 4: JavaScript II",
+    "year": "2026",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Moved my project list into a JSON data file and rendered it with reusable JavaScript modules, showed my latest projects on the home page, and pulled live stats from the GitHub API."
+  },
+  {
+    "title": "Lab 3: Introduction to JS",
+    "year": "2026",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Generated the site's navigation menu with JavaScript, highlighted the current page, and added a light/dark theme switcher that is remembered with localStorage."
+  },
+  {
+    "title": "Project 2: Persuasive or Deceptive Visualization?",
+    "year": "2026",
+    "url": "projects/project2/",
+    "image": "projects/project2/side2_world_total_area.png",
+    "alt": "Area chart of total world CO2 emissions rising from 1960 to 2018.",
+    "description": "DSC 209R Project 2: two visualizations from the same World Bank CO₂ data, one arguing that global emissions are going down and one arguing that they are rising, with the design decisions behind each."
+  },
+  {
+    "title": "Lab 2: Styling with CSS",
+    "year": "2026",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Styled my portfolio with CSS: a responsive grid for projects, a structured resume layout, and consistent typography across pages."
+  },
+  {
+    "title": "Project 1: Expository Visualization",
+    "year": "2026",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "DSC 209R Project 1: an expository visualization designed to clearly communicate a single insight from a real dataset."
+  },
+  {
+    "title": "Lab 1: Introduction to the Web Platform",
+    "year": "2026",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Built the first version of this portfolio in plain HTML: home, projects, contact, and resume pages, published with GitHub Pages."
+  },
+  {
+    "title": "Lab 0: Setup",
+    "year": "2026",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Set up my development environment for the course: VS Code, Git, GitHub, Node.js, and a local web server."
+  },
+  {
+    "title": "Lorem ipsum dolor sit.",
+    "year": "2025",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis fuga velit fugit, esse, quibusdam alias cum quae sapiente saepe quod odit cumque unde ut natus ipsa. Adipisci maxime explicabo vitae!"
+  },
+  {
+    "title": "Saepe quas necessitatibus iste.",
+    "year": "2025",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Error eos tempora enim earum sapiente voluptatem animi nisi nemo inventore commodi, veritatis nam quod sequi molestias quis dolore reprehenderit cum nostrum quibusdam quo et officiis! Distinctio iste incidunt facere."
+  },
+  {
+    "title": "Odit nihil consequuntur tenetur!",
+    "year": "2024",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Aut corrupti nemo reiciendis et ad, dolorum beatae adipisci qui quia placeat mollitia illum sit incidunt dolor autem eum amet? Quam quos eveniet, iste vitae culpa odio fugit cupiditate omnis."
+  },
+  {
+    "title": "Unde dicta vero magnam.",
+    "year": "2023",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Veniam, inventore molestias magnam qui eum, fugit repellendus expedita ut corporis sint temporibus. Esse et itaque recusandae laborum optio dolorem adipisci, cumque iste quo explicabo voluptatibus facilis veniam unde doloremque!"
+  },
+  {
+    "title": "Cupiditate illo laboriosam hic?",
+    "year": "2022",
+    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+    "description": "Mollitia minima repellat dolorum incidunt voluptates, dolor beatae error nemo, aliquid in quaerat veniam officiis dolores a laboriosam accusamus. Id minus quia voluptatem officiis voluptates maiores modi vitae. Dolor, quisquam."
+  }
+]
