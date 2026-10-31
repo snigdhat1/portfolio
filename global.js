@@ -4,14 +4,14 @@ function $$(selector, context = document) {
   return Array.from(context.querySelectorAll(selector));
 }
 
-// this is step 2 which is replaced below by step 3
+// this was step 2, step 3 below replaces it so its commented out
 // let navLinks = $$('nav a');
 // let currentLink = navLinks.find(
 //   (a) => a.host === location.host && a.pathname === location.pathname,
 // );
 // currentLink?.classList.add('current');
 
-// build the nav menu from a list of pages
+// makes the nav menu from the list of pages
 let pages = [
   { url: '', title: 'Home' },
   { url: 'projects/', title: 'Projects' },
@@ -49,7 +49,7 @@ for (let p of pages) {
   nav.append(a);
 }
 
-// dark mode switcher
+// the dark mode dropdown
 document.body.insertAdjacentHTML(
   'afterbegin',
   `
@@ -65,27 +65,27 @@ document.body.insertAdjacentHTML(
 
 let select = document.querySelector('.color-scheme select');
 
-// actually sets the color scheme
+// this is what actually changes the color scheme
 function setColorScheme(colorScheme) {
   document.documentElement.style.setProperty('color-scheme', colorScheme);
   select.value = colorScheme;
 }
 
-// color scheme in localStorage
+// if you picked a color scheme before, this loads it back from localStorage
 if ('colorScheme' in localStorage) {
   setColorScheme(localStorage.colorScheme);
 }
 
-// listens for a new theme picked in the dropdown and saves it
+// when you pick a new theme in the dropdown it switches and saves it
 select.addEventListener('input', function (event) {
   setColorScheme(event.target.value);
   localStorage.colorScheme = event.target.value;
 });
 
-// loads a JSON file (local or from an API) and returns the parsed data
+// grabs a json file (either ours or from an api) and gives back the data
 export async function fetchJSON(url) {
   try {
-    // Fetch the JSON file from the given URL
+    // gets the json from the url
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -99,7 +99,7 @@ export async function fetchJSON(url) {
   }
 }
 
-// paths in projects.json are relative to the site root, so they work from any page
+// the image paths in projects.json start from the main folder so this makes them work from any page
 function resolvePath(path) {
   return path.startsWith('http') ? path : BASE_PATH + path;
 }
@@ -133,7 +133,10 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     article.innerHTML = `
       <${headingLevel}>${title}</${headingLevel}>
       <img src="${resolvePath(project.image ?? 'https://vis-society.github.io/labs/2/images/empty.svg')}" alt="${project.alt ?? project.title}">
-      <p>${project.description ?? ''}</p>
+      <div>
+        <p>${project.description ?? ''}</p>
+        <p class="project-year">c. ${project.year}</p>
+      </div>
     `;
     containerElement.appendChild(article);
   }

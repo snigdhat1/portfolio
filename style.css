@@ -8,7 +8,7 @@ html {
 }
 
 body {
-    /* Set line height to 1.5 times the font sizeand use the OS’s UI font as the website font */
+    /* makes the line spacing 1.5x the font size and uses whatever font your computer uses */
     font: 100%/1.5 system-ui;
     max-width: 100ch;
     margin-inline: max(1em, (100% - 100ch) / 2);
@@ -38,7 +38,7 @@ form button {
 }
 
 img {
-    /* Half the page width so it doesnt overflow the page */
+    /* half the page width so it doesnt go off the page */
     width: 70%;
     height: auto;
 }
@@ -66,7 +66,7 @@ nav a.current {
 }
 
 nav a:hover {
-    /* Same underline as the current link, in the accent color */
+    /* same underline as the current page link but in the accent color */
     border-bottom: 0.4em solid var(--color-accent);
     padding-bottom: 0.1em;
     background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
@@ -96,7 +96,7 @@ nav a:hover {
   margin: 0;
 }
 
-/* GitHub stats on the home page: labels on row 1, numbers on row 2 */
+/* github stats on the home page, labels on top and the numbers under them */
 #profile-stats dl {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -126,7 +126,7 @@ h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
 }
 
-/*  Resume Styling */
+/* resume stuff */
 
 .resume > header {
   text-align: center;
@@ -193,10 +193,10 @@ h1, h2, h3, h4, h5, h6 {
   grid-column: 1 / -1;
 }
 
-/* Project 2 report */
+/* project 2 report stuff */
 
 .report {
-  /* The accent is too dark to read on a dark background, so lighten it in dark mode */
+  /* the accent color is too dark to read in dark mode so this makes it lighter */
   --report-accent: light-dark(var(--color-accent), oklch(78% 0.07 202.825));
 }
 
@@ -223,7 +223,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .report figure img {
-  /* Charts need the full width to stay readable (global img rule is 70%) */
+  /* the charts need the full width or else theyre hard to read (normal images are 70%) */
   display: block;
   width: 100%;
   margin-bottom: 1em;
@@ -254,4 +254,76 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
   border: 1px solid var(--report-accent);
   border-radius: 1em;
+}
+
+.project-year {
+  font-family: Baskerville, serif;
+  font-variant-numeric: oldstyle-nums;
+  color: oklch(50% 3% 200);
+}
+
+/* lab 5 pie chart stuff */
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+}
+
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 2em;
+  overflow: visible;
+}
+
+#projects-pie-plot path {
+  fill: var(--color);
+  cursor: pointer;
+  transition: 300ms;
+}
+
+/* when you hover a slice the other ones fade out */
+#projects-pie-plot:has(path:hover) path:not(:hover) {
+  opacity: 0.5;
+}
+
+.selected {
+  --color: oklch(60% 45% 0) !important;
+}
+
+.legend {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+  gap: 1em;
+  margin: 1em 0;
+  padding: 1em;
+  border: 1px solid oklch(80% 3% 200);
+  border-radius: 0.5em;
+  list-style: none;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+}
+
+.legend-item em {
+  color: oklch(50% 3% 200);
+}
+
+.swatch {
+  display: inline-block;
+  width: 1em;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: var(--color);
+}
+
+.searchBar {
+  width: 100%;
+  margin-bottom: 1em;
+  padding: 0.5em;
 }
