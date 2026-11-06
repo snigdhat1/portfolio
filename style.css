@@ -327,3 +327,99 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1em;
   padding: 0.5em;
 }
+
+/* lab 6 meta page stuff */
+
+/* summary stats, labels on top and the numbers under them like the home page */
+.stats {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  text-align: center;
+}
+
+.stats dt {
+  grid-row: 1;
+  font-size: 80%;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.stats dd {
+  grid-row: 2;
+  margin: 0;
+  font-size: 150%;
+  font-weight: bold;
+}
+
+/* makes the gridlines faint so they dont take over the chart */
+.gridlines line {
+  stroke-opacity: 0.15;
+}
+
+.gridlines .domain {
+  display: none;
+}
+
+circle {
+  transition: 200ms;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+circle:hover {
+  transform: scale(1.5);
+}
+
+circle.selected {
+  fill: #ff6b6b;
+}
+
+/* the tooltip, labels on the left and values on the right */
+dl.info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25em 1em;
+  margin: 0;
+  transition-duration: 500ms;
+  transition-property: opacity, visibility;
+}
+
+dl.info dt {
+  opacity: 0.6;
+}
+
+dl.info dd {
+  margin: 0;
+}
+
+dl.info[hidden]:not(:hover, :focus-within) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tooltip {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  padding: 0.75em 1em;
+  background-color: color-mix(in oklch, canvas 85%, transparent);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px oklch(0% 0 0 / 20%);
+  border-radius: 0.5em;
+}
+
+/* the dashed line around the brush box moves */
+@keyframes marching-ants {
+  to {
+    stroke-dashoffset: -8; /* 5 + 3 */
+  }
+}
+
+.selection {
+  fill-opacity: 0.1;
+  stroke: black;
+  stroke-opacity: 0.7;
+  stroke-dasharray: 5 3;
+  animation: marching-ants 2s linear infinite;
+}
