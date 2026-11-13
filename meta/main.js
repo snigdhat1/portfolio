@@ -1,4 +1,5 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import scrollama from 'https://cdn.jsdelivr.net/npm/scrollama@3.2.0/+esm';
 
 // these are up here so the brush functions can use them too
 let xScale;
@@ -46,11 +47,14 @@ function processCommits(data) {
       });
 
       return ret;
-    });
+    })
+    .sort((a, b) => a.datetime - b.datetime);
 }
 
 // the summary stats at the top of the page
 function renderCommitInfo(data, commits) {
+  // clears the old stats first since this runs again every time the slider moves
+  d3.select('#stats').selectAll('*').remove();
   const dl = d3.select('#stats').append('dl').attr('class', 'stats');
 
   dl.append('dt').html('Total <abbr title="Lines of code">LOC</abbr>');
@@ -120,22 +124,46 @@ function renderScatterPlot(data, commits) {
 
   gridlines.call(d3.axisLeft(yScale).tickFormat('').tickSize(-usableArea.width));
 
-  // sqrt scale so the circle area matches the lines edited, not the radius
-  const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
-  const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([2, 30]);
-
   // big commits get drawn first so the small ones are on top and still hoverable
   const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
 
-  const dots = svg.append('g').attr('class', 'dots');
+  svg.append('g').attr('class', 'dots');
+  drawDots(svg, sortedCommits);
 
-  dots
+  const xAxis = d3.axisBottom(xScale);
+  // shows the hours like 00:00, 02:00, etc
+  const yAxis = d3
+    .axisLeft(yScale)
+    .tickFormat((d) => String(d % 24).padStart(2, '0') + ':00');
+
+  // classes on the axes so updateScatterPlot can find them again
+  svg
+    .append('g')
+    .attr('class', 'x-axis')
+    .attr('transform', `translate(0, ${usableArea.bottom})`)
+    .call(xAxis);
+
+  svg
+    .append('g')
+    .attr('class', 'y-axis')
+    .attr('transform', `translate(${usableArea.left}, 0)`)
+    .call(yAxis);
+
+  createBrushSelector(svg);
+}
+
+// draws or updates the dots, used by both renderScatterPlot and updateScatterPlot
+// d.id as the key so each circle stays stuck to the same commit instead of jumping around
+function drawDots(svg, sortedCommits) {
+  svg
+    .select('g.dots')
     .selectAll('circle')
-    .data(sortedCommits)
+    .data(sortedCommits, (d) => d.id)
     .join('circle')
     .attr('cx', (d) => xScale(d.datetime))
     .attr('cy', (d) => yScale(d.hourFrac))
     .attr('r', (d) => rScale(d.totalLines))
+    .style('--r', (d) => rScale(d.totalLines))
     .attr('fill', 'steelblue')
     .style('fill-opacity', 0.7)
     .on('mouseenter', (event, commit) => {
@@ -148,24 +176,54 @@ function renderScatterPlot(data, commits) {
       d3.select(event.currentTarget).style('fill-opacity', 0.7);
       updateTooltipVisibility(false);
     });
+}
 
-  const xAxis = d3.axisBottom(xScale);
-  // shows the hours like 00:00, 02:00, etc
-  const yAxis = d3
-    .axisLeft(yScale)
-    .tickFormat((d) => String(d % 24).padStart(2, '0') + ':00');
+// reuses the svg thats already there instead of making a new one every time
+// (calling renderScatterPlot again just stacks a bunch of charts on top of each other)
+function updateScatterPlot(data, commits) {
+  const svg = d3.select('#chart').select('svg');
 
-  svg
-    .append('g')
-    .attr('transform', `translate(0, ${usableArea.bottom})`)
-    .call(xAxis);
+  xScale = xScale.domain(d3.extent(commits, (d) => d.datetime));
 
-  svg
-    .append('g')
-    .attr('transform', `translate(${usableArea.left}, 0)`)
-    .call(yAxis);
+  // clear the old x axis and draw the new one in the same spot
+  const xAxisGroup = svg.select('g.x-axis');
+  xAxisGroup.selectAll('*').remove();
+  xAxisGroup.call(d3.axisBottom(xScale));
 
-  createBrushSelector(svg);
+  drawDots(svg, d3.sort(commits, (d) => -d.totalLines));
+}
+
+// one row per file with a dot for every line, biggest files first
+function updateFileDisplay(filteredCommits) {
+  let lines = filteredCommits.flatMap((d) => d.lines);
+  let files = d3
+    .groups(lines, (d) => d.file)
+    .map(([name, lines]) => ({ name, lines }))
+    .sort((a, b) => b.lines.length - a.lines.length);
+
+  let filesContainer = d3
+    .select('#files')
+    .selectAll('div')
+    .data(files, (d) => d.name)
+    .join((enter) =>
+      enter.append('div').call((div) => {
+        div.append('dt');
+        div.append('dd');
+      }),
+    );
+
+  filesContainer
+    .select('dt')
+    .html((d) => `<code>${d.name}</code><small>${d.lines.length} lines</small>`);
+
+  // the color goes on each line dot because the line is what has the type (css, js, html)
+  filesContainer
+    .select('dd')
+    .selectAll('div')
+    .data((d) => d.lines)
+    .join('div')
+    .attr('class', 'loc')
+    .attr('style', (d) => `--color: ${colors(d.type)}`);
 }
 
 // fills in the tooltip with the commit you hovered
@@ -281,5 +339,92 @@ function renderLanguageBreakdown(selection) {
 let data = await loadData();
 let commits = processCommits(data);
 
-renderCommitInfo(data, commits);
+// sqrt scale so the circle area matches the lines edited, not the radius
+// made from all the commits so circles dont change size when the slider moves
+const rScale = d3
+  .scaleSqrt()
+  .domain(d3.extent(commits, (d) => d.totalLines))
+  .range([2, 30]);
+
+// one color per technology for the file dots
+let colors = d3.scaleOrdinal(d3.schemeTableau10);
+
 renderScatterPlot(data, commits);
+
+// slider goes 0 to 100 and this maps that onto the first commit to the last commit
+let commitProgress = 100;
+let timeScale = d3
+  .scaleTime()
+  .domain([d3.min(commits, (d) => d.datetime), d3.max(commits, (d) => d.datetime)])
+  .range([0, 100]);
+let commitMaxTime = timeScale.invert(commitProgress);
+let filteredCommits = commits;
+
+const slider = document.getElementById('commit-progress');
+const sliderTime = document.getElementById('commit-slider-time');
+
+// redraws everything with only the commits up to maxTime
+// the slider and the scrolling both end up here so they stay in sync
+function updateForTime(maxTime) {
+  commitMaxTime = maxTime;
+  commitProgress = timeScale(maxTime);
+  slider.value = commitProgress;
+  sliderTime.textContent = commitMaxTime.toLocaleString('en', {
+    dateStyle: 'long',
+    timeStyle: 'short',
+  });
+
+  filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+  renderCommitInfo(
+    filteredCommits.flatMap((d) => d.lines),
+    filteredCommits,
+  );
+  updateScatterPlot(data, filteredCommits);
+  updateFileDisplay(filteredCommits);
+}
+
+function onTimeSliderChange() {
+  updateForTime(timeScale.invert(Number(slider.value)));
+}
+
+slider.addEventListener('input', onTimeSliderChange);
+onTimeSliderChange();
+
+// one chunk of story text per commit, scrolling past them moves the chart forward in time
+d3.select('#scatter-story')
+  .selectAll('.step')
+  .data(commits)
+  .join('div')
+  .attr('class', 'step')
+  .html(
+    (d, i) => `
+      On ${d.datetime.toLocaleString('en', {
+        dateStyle: 'full',
+        timeStyle: 'short',
+      })},
+      I made <a href="${d.url}" target="_blank">${
+        i > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'
+      }</a>.
+      I edited ${d.totalLines} lines across ${
+        d3.rollups(
+          d.lines,
+          (D) => D.length,
+          (d) => d.file,
+        ).length
+      } files.
+      Then I looked over all I had made, and I saw that it was very good.
+    `,
+  );
+
+// when a step hits the middle of the screen, show commits up to that one
+function onStepEnter(response) {
+  updateForTime(response.element.__data__.datetime);
+}
+
+const scroller = scrollama();
+scroller
+  .setup({
+    container: '#scrolly-1',
+    step: '#scrolly-1 .step',
+  })
+  .onStepEnter(onStepEnter);
