@@ -1,5 +1,13 @@
 [
   {
+    "title": "Lab 7: Bikewatching",
+    "year": "2026",
+    "url": "https://snigdhat1.github.io/bikewatching/",
+    "image": "images/bikewatching.png",
+    "alt": "Map of Boston and Cambridge with bike lanes and Bluebikes stations sized by traffic.",
+    "description": "An interactive Mapbox map of Bluebikes traffic in March 2024: stations sized by trips, colored by whether more people leave or arrive, with a slider to filter by time of day."
+  },
+  {
     "title": "Lab 4: JavaScript II",
     "year": "2026",
     "image": "https://vis-society.github.io/labs/2/images/empty.svg",
