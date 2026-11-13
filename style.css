@@ -432,18 +432,32 @@ dl.info[hidden]:not(:hover, :focus-within) {
 
 /* lab 8 meta page stuff */
 
-/* slider on the left, date pushed over to the right */
+/* meta stats change as you scroll, so keep each one on one line or the page jumps when "in the afternoon" wraps */
+/* columns are as wide as their text instead of all the same width */
+#stats .stats {
+  grid-auto-columns: auto;
+  justify-content: space-between;
+  column-gap: 1em;
+}
+
+#stats .stats dd {
+  white-space: nowrap;
+}
+
+/* slider across the whole width, date on its own line under it on the right */
 .slider-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 1em;
+  gap: 0.25em 1em;
 }
 
 .slider-row label {
-  flex: 1;
+  flex: 1 1 100%;
   display: flex;
   align-items: baseline;
   gap: 0.5em;
+  white-space: nowrap;
 }
 
 .slider-row input {
@@ -452,17 +466,28 @@ dl.info[hidden]:not(:hover, :focus-within) {
 
 .slider-row time {
   margin-left: auto;
+  white-space: nowrap;
 }
 
 /* story text on the left, chart on the right */
 #scrolly-1 {
   position: relative;
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 }
 
-#scrolly-1 > * {
+/* story gets a third and the chart gets two thirds so the chart is big enough to read */
+#scatter-story {
   flex: 1;
+}
+
+#scatter-plot {
+  flex: 2;
+}
+
+/* the axis text is tiny once the chart is squished into half the page, this bumps it up */
+#chart .tick text {
+  font-size: 16px;
 }
 
 #scatter-story {
@@ -479,15 +504,26 @@ dl.info[hidden]:not(:hover, :focus-within) {
   align-self: start;
 }
 
-/* lots of space between steps so each commit gets its own turn in the middle of the screen */
+/* each commit is its own little card, scrollama moves the chart when a card crosses the middle of the screen */
 #scatter-story .step {
-  padding-bottom: 60vh;
+  margin-block: 0 1.5em;
+  padding: 1em;
+  border-left: 3px solid steelblue;
+  background: color-mix(in oklch, canvas 92%, steelblue);
+  border-radius: 0 0.5em 0.5em 0;
+}
+
+/* extra room after the last one so it can still scroll up to the middle */
+#scatter-story .step:last-child {
+  margin-bottom: 50vh;
 }
 
 /* file name column and dots column, subgrid so every row lines up */
+/* name column is as wide as the longest file name so long ones dont run into the dots */
 #files {
   display: grid;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: max-content 1fr;
+  column-gap: 1.5em;
 
   > div {
     grid-column: 1 / -1;

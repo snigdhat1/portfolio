@@ -130,7 +130,7 @@ function renderScatterPlot(data, commits) {
   svg.append('g').attr('class', 'dots');
   drawDots(svg, sortedCommits);
 
-  const xAxis = d3.axisBottom(xScale);
+  const xAxis = d3.axisBottom(xScale).ticks(6);
   // shows the hours like 00:00, 02:00, etc
   const yAxis = d3
     .axisLeft(yScale)
@@ -188,7 +188,7 @@ function updateScatterPlot(data, commits) {
   // clear the old x axis and draw the new one in the same spot
   const xAxisGroup = svg.select('g.x-axis');
   xAxisGroup.selectAll('*').remove();
-  xAxisGroup.call(d3.axisBottom(xScale));
+  xAxisGroup.call(d3.axisBottom(xScale).ticks(6));
 
   drawDots(svg, d3.sort(commits, (d) => -d.totalLines));
 }
@@ -296,9 +296,14 @@ function renderSelectionCount(selection) {
     : [];
 
   const countElement = document.querySelector('#selection-count');
-  countElement.textContent = `${
-    selectedCommits.length || 'No'
-  } commits selected`;
+  // says how to use the brush when nothing is picked, since "no commits selected" looked broken next to the hover tooltip
+  if (selectedCommits.length === 0) {
+    countElement.textContent = 'Drag a box on the chart to select commits';
+  } else if (selectedCommits.length === 1) {
+    countElement.textContent = '1 commit selected';
+  } else {
+    countElement.textContent = `${selectedCommits.length} commits selected`;
+  }
 
   return selectedCommits;
 }
